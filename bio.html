@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>AJ Smith Photography</title>
+	<meta name="author" content="AJ Smith Web Design and Photography" />
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	
+	<link href="http://code.jquery.com/mobile/1.0rc2/jquery.mobile-1.0rc2.min.css" rel="stylesheet" />
+	<link href="css/jquery-mobile.css" type="text/css" rel="stylesheet" />
+	<link href="css/photoswipe.css" type="text/css" rel="stylesheet" />
+	
+	<link href="css/ajsmithphotography.css" type="text/css" rel="stylesheet" />
+	
+	<script type="text/javascript" src="lib/klass.min.js"></script>
+	
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/mobile/1.0rc2/jquery.mobile-1.0rc2.min.js"></script>
+	<script type="text/javascript" src="code.photoswipe.jquery-3.0.5.min.js"></script>
+	<script src="js/ajsphotography.js"></script><!-- Photography App Specific JS -->
+
+	<!-- Favicons
+	================================================== -->
+	<link rel="shortcut icon" href="images/favicon.png">
+	<link rel="apple-touch-icon" href="images/Icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="images/Icon.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="images/Icon.png">
+	
+	<!-- <link rel="apple-touch-icon" sizes="114x114" href="http://semelsnow.com/wp/images/apple-touch-icon-114x114.png"> -->
+
+	<script>
+		
+		/*
+		 * IMPORTANT!!!
+		 * REMEMBER TO ADD  rel="external"  to your anchor tags. 
+		 * If you don't this will mess with how jQuery Mobile works
+		 */
+		
+		(function(window, $, PhotoSwipe){ 
+			
+			$(document).ready(function(){
+				
+				$('div.gallery-page')
+					.live('pageshow', function(e){
+						
+						var 
+							currentPage = $(e.target),
+							options = {imageScaleMethod: 'fit', minUserZoom: '1'},
+							photoSwipeInstance = $("ul.gallery a", e.target).photoSwipe(options,  currentPage.attr('id') );
+							
+						return true;
+						
+					})
+					
+					.live('pagehide', function(e){
+						
+						var 
+							currentPage = $(e.target),
+							photoSwipeInstance = PhotoSwipe.getInstance(currentPage.attr('id'));
+
+						if (typeof photoSwipeInstance != "undefined" && photoSwipeInstance != null) {
+							PhotoSwipe.detatch(photoSwipeInstance);
+						}
+						
+						return true;
+						
+					});
+				
+			});
+		
+		}(window, window.jQuery, window.Code.PhotoSwipe));
+		
+	</script>
+</head>
+<body>
+<div data-role="page" data-add-back-btn="true" data-theme="a" id="Gallery1" class="gallery-page">
+
+	<div class="sidebar-left-bio">
+		<ul class="fixedElement-bio rot-neg-90">
+			<li>The Photographer</li>
+			<li class="icons">
+				<a href="#" data-rel="back" data-transition="flip">
+					<span class="icon-home"></span>
+					<br>
+					<span class="icon-text">Home</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+
+	<div data-role="content">	
+		
+		<ul>
+			<div id="ps_sidebar_name"><img class="logo" src="images/AJSmith.png" width="50%" alt="AJ Smith Photography"></div>
+			<div id="ps_sidebar_content">
+				AJ Smith is a Photographer who travels the world shooting what he see's and what he loves! Lifestyles, cultures, experiences, good times, nature, panorama often finding himself in the thick of extreme experiences and situations many people only dream of!<p>He was born in England, though now lives in Melbourne, currently touring the West Coast of Australia in a 4x4. His most recent Photo shoots include trips to India, Indonesia and the Arctic Circle.</p>
+				<img src="images/ajprofile.png" width="50%" alt="AJ Smith Photography">
+			</div>
+		</ul>
+		
+	</div><!--data-role content-->
+	
+	<div data-role="footer">
+		<h4>&copy; 2012 <a href="http://www.AJSmith.co.uk">AJ Smith Photography</a></h4>
+	</div>
+	
+</div>
+
+</body>
+</html>

@@ -1,0 +1,109 @@
+/* 'Text */
+
+a { text-decoration:none; font-weight: 700; color: #fff; }
+
+.rot-neg-90 {
+  /* rotate -90 deg, not sure if a negative number is supported so I used 270 */
+  -moz-transform: rotate(270deg);
+  -moz-transform-origin: 50% 50%;
+  -webkit-transform: rotate(270deg);
+  -webkit-transform-origin: 50% 50%;
+  /* IE support too convoluted for the time I've got on my hands... */
+}
+
+/* 'Pages */
+.ui-page {
+	background: #000;
+}
+
+.sidebar-left {
+	float: left;
+	/* margin-top: 60px; */
+	width: 50px;
+	font-size:24px;
+}
+	
+.fixedElement, .fixedElement-icons {
+    float: left;
+    margin: 0 0 0 -14px; /* This annoyingly needs adjusting depending on number of vertical items. Vertical items still = horizontal width, even though its not used */
+    padding: 0;
+    position: fixed;
+    top: 237px;
+    width: 50px;
+    z-index: 100;
+}
+.fixedElement-icons {
+	margin: 0 0 0 15px;
+    position: relative;
+    top: 20px;
+}
+
+.fixedElement li, .fixedElement-icons li {
+	list-style: none;
+	float: left;
+	padding-right: 10px;
+}
+
+.content-pad { /* We don't want padding on thumbnail pages, but do on content*/
+	padding:15px !important;
+}
+
+.ui-content {
+	/* background: url(../images/bkgrnd.png) repeat; */
+	background: #000;
+	padding: 0;
+}
+
+.gallery li a {
+	border: none;
+	margin: 2px;
+}
+
+
+/* 'Icons */
+
+.ui-grid-d .ui-block-a, .ui-grid-d .ui-block-b, .ui-grid-d .ui-block-c, .ui-grid-d .ui-block-d, .ui-grid-d .ui-block-e {
+	width: auto;
+}
+
+.icon-space {
+	height:50px;
+	width:50px;
+}
+
+.icon-space span {
+	clear: both;
+    float: left;
+    padding-top: 4px;
+}
+
+.icon-text{
+	font-size:10px;
+}
+
+.icon-back {
+    background-image: url("../images/icons/circle-west.png");
+    background-repeat: no-repeat;
+    height: 23px;
+    width: 29px;
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+    .icon-back {
+        background-image: url("images/icons/circle-west@2x.png");
+        background-size: 18px 18px;
+		background-repeat: no-repeat;
+    height: 23px;
+    width: 29px;
+    }
+}
+
+
+/* Hi-res display */
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
+       only screen and (-moz-min-device-pixel-ratio: 1.5),
+       only screen and (min-resolution: 240dpi)
+{
+	div.ps-toolbar div div.ps-toolbar-content
+	{
+	}
+}

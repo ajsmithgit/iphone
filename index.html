@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>AJ Smith Photography</title>
+	<meta name="author" content="AJ Smith Web Design and Photography" />
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	
+	<!-- Favicons
+	================================================== -->
+	<link rel="shortcut icon" href="images/favicon.png">
+	<link rel="apple-touch-icon" href="images/Icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="images/Icon.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="images/Icon.png">
+	
+	<!-- <link rel="apple-touch-icon" sizes="114x114" href="http://semelsnow.com/wp/images/apple-touch-icon-114x114.png"> -->
+
+	
+	<!-- CSS -->
+	
+	<link href="css/jquery.mobile-1.0rc2.min.css" rel="stylesheet" />
+	<link href="css/jquery-mobile.css" type="text/css" rel="stylesheet" />
+	<link href="css/photoswipe.css" type="text/css" rel="stylesheet" />
+	
+	<link href="css/ajsmithphotography.css" type="text/css" rel="stylesheet" />
+	
+	<!-- jQuery Mobile JS -->
+	
+	<script type="text/javascript" src="js/jquery-1.6.4.min.js"></script>
+	<script type="text/javascript" src="js/jquery.mobile-1.0rc2.min.js"></script>
+
+	<!-- PhotoSwipe + Cordova - All must be in this order -->
+	
+	<script type="text/javascript" src="lib/klass.min.js"></script>
+	<script type="text/javascript" src="code.photoswipe.jquery-3.0.5.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/cordova-1.5.0.js"></script>
+	
+	<!-- Custom Photoswipe vs Cordova file save JS -->
+	<script type="text/javascript" charset="utf-8" src="js/Canvas2ImagePlugin.js"></script>
+	
+	<script type="text/javascript">	
+			/*
+			 * IMPORTANT!!!
+			 * REMEMBER TO ADD  rel="external"  to your anchor tags. 
+			 * If you don't this will mess with how jQuery Mobile works
+			 */
+	  
+	  function wallpaperSaved() {
+		//document.getElementsByClassName("save-wallpaper")[0].innerHTML = "Save wallpaper"
+		jQuery(".save-wallpaper").removeClass('rotate');
+	  }
+	  function goFacebook()
+	  {
+		window.open("https://www.facebook.com/pages/AJ-Smith-Photography/20765638204");
+	  }
+	  //end my code
+	  //begin cordova
+	  function onBodyLoad()
+		{		
+			document.addEventListener("deviceready", onDeviceReady, false);
+		}
+	  
+	  function onDeviceReady()
+		{
+			// do your thing!
+			
+		}
+	  //end cordova
+			
+	  //begin photoswipe
+		(function(window, Util, PhotoSwipe){
+			
+				document.addEventListener('DOMContentLoaded', function(){
+
+			var saveWallpaperEl,
+			  
+						options = {
+							allowUserZoom:false,
+							captionAndToolbarShowEmptyCaptions:false,
+							margin: 1,
+							imageScaleMethod:"fitNoUpscale",
+			  
+							getToolbar: function(){
+								return '<div class="ps-toolbar-close ps-button"><div class="ps-toolbar-content"></div></div><div class="ps-toolbar-play ps-button"><div class="ps-toolbar-content"></div></div><div class="ps-toolbar-previous ps-button"><div class="ps-toolbar-content"></div></div><div class="ps-toolbar-next ps-button"><div class="ps-toolbar-content"></div></div><div class="ps-toolbar-save save-wallpaper ps-button"><div class="ps-toolbar-content"></div></div>';
+								// NB. Calling PhotoSwipe.Toolbar.getToolbar() wil return the default toolbar HTML
+							}
+						
+						},
+						instance = PhotoSwipe.attach( window.document.querySelectorAll('.gallery-page ul.gallery a'), options );
+						
+						// onShow - store a reference to our "say hi" button
+						instance.addEventHandler(PhotoSwipe.EventTypes.onShow, function(e){
+							saveWallpaperEl = window.document.querySelectorAll('.save-wallpaper')[0];
+						});
+						
+						// onToolbarTap - listen out for when the toolbar is tapped
+						instance.addEventHandler(PhotoSwipe.EventTypes.onToolbarTap, function(e){
+							if (e.toolbarAction === PhotoSwipe.Toolbar.ToolbarAction.none){
+							
+								if (e.tapTarget === saveWallpaperEl || Util.DOM.isChildOf(e.tapTarget, saveWallpaperEl)){
+									
+									photo_file = instance.getCurrentImage();
+									final_file = photo_file.originalSrc;
+									final_file = final_file.substring(final_file.indexOf("/www/images/galleries/"));
+									
+					//document.getElementsByClassName("save-wallpaper")[0].innerHTML = "Saving..."
+					jQuery(".save-wallpaper").addClass('rotate');
+					
+					var t=setTimeout("wallpaperSaved()",700);
+					
+					var canvas2ImagePlugin = window.plugins.canvas2ImagePlugin;
+					canvas2ImagePlugin.saveImageDataToLibrary(
+						function(msg){
+							alert(msg);
+						}, 
+						function(err){
+							alert(err);
+						}, 
+						final_file
+					);
+					
+					//ORIGINAL CORDOVA IDEA OF WRITING TO CAMERA ROLL
+					//Cordova.exec("ImageHelper.saveToUserLibrary", final_file);
+					//alert(final_file);
+									
+							  
+								}
+							}
+						});
+						
+						// onBeforeHide - clean up
+						instance.addEventHandler(PhotoSwipe.EventTypes.onBeforeHide, function(e){
+				saveWallpaperEl = null;
+						});
+						
+						
+				}, false);
+				
+				
+			}(window, window.Code.Util, window.Code.PhotoSwipe));
+		// end photoswipe
+		</script>
+	
+	
+	<script src="js/ajsphotography.js"></script><!-- Photography App Specific JS -->
+
+</head>
+<body onload="onBodyLoad()">
+
+<div data-role="page" id="home" data-theme="a">
+
+	<div class="sidebar-left">
+		<ul class="fixedElement fixedElement-home rot-neg-90">
+			<li>AJ Smith Photography</li>
+			<li class="icons">
+				<a href="#bio" data-transition="flip">
+					<span class="icon-bio"></span>
+					<br>
+					<span class="icon-text">Bio</span>
+				</a>
+			</li>
+			<li class="icons">
+				<a href="#home" data-transition="flip">
+					<span class="icon-home"></span>
+					<br>
+					<span class="icon-text">Home</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+
+
+	<div data-role="content">	
+
+		<!-- <img class="logo" src="images/AJSmith.png" width="50%" alt="AJ Smith Photography"> -->
+		
+		<!-- <p>AJ Smith is a Photographer who travels the world shooting what he see's and what he loves! Lifestyles, cultures, experiences, good times, nature, panorama often finding himself in the thick of extreme experiences and situations many people only dream of!</p> -->
+		
+		<div class="home-nav">
+			<ul class="gallery">
+				<li><a href="#vietnam" data-transition="slide"><img src="images/galleries/vietnam.jpg" alt="Image001"></a></li>
+				<li><a href="#brazil" data-transition="slide"><img src="images/galleries/brazil.jpg" alt="Image001"></a></li>
+				<li><a href="#vietnaminfo" data-transition="slide"><img src="images/galleries/frog.jpg" alt="Image001"></a></li>
+				<li><a href="#australia" data-transition="slide"><img src="images/galleries/lights.jpg" alt="Image001"></a></li>
+				<li><a href="template.html" data-transition="slide" class="ui-link-inherit"><img src="images/galleries/mini.jpg" alt="Image001"></a></li>
+				<li><a href="template.html" data-transition="slide" class="ui-link-inherit"><img src="images/galleries/waterfall.jpg" alt="Image001"></a></li>
+						<li><a href="template.html" data-transition="slide" class="ui-link-inherit"><img src="images/galleries/australia.jpg" alt="Image001"></a></li>
+				<li><a href="template.html" data-transition="slide" class="ui-link-inherit"><img src="images/galleries/brazil.jpg" alt="Image001"></a></li>
+				<li><a href="template.html" data-transition="slide" class="ui-link-inherit"><img src="images/galleries/frog.jpg" alt="Image001"></a></li>
+				<li><a href="template.html" data-transition="slide" class="ui-link-inherit"><img src="images/galleries/lights.jpg" alt="Image001"></a></li>
+				<li><a href="template.html" data-transition="slide" class="ui-link-inherit"><img src="images/galleries/mini.jpg" alt="Image001"></a></li>
+				<li><a href="template.html" data-transition="slide" class="ui-link-inherit"><img src="images/galleries/waterfall.jpg" alt="Image001"></a></li>
+						<li><a href="template.html" data-transition="slide" class="ui-link-inherit"><img src="images/galleries/australia.jpg" alt="Image001"></a></li>
+				<li><a href="template.html" data-transition="slide" class="ui-link-inherit"><img src="images/galleries/brazil.jpg" alt="Image001"></a></li>
+				<li><a href="template.html" data-transition="slide" class="ui-link-inherit"><img src="images/galleries/frog.jpg" alt="Image001"></a></li>
+				<li><a href="template.html" data-transition="slide" class="ui-link-inherit"><img src="images/galleries/lights.jpg" alt="Image001"></a></li>
+				<li><a style="position:relative;" href="template.html" data-transition="slide" class="ui-link-inherit"><img src="images/galleries/mini.jpg" alt="Image001"></a></li>
+				<li><a href="template.html" data-transition="slide" class="ui-link-inherit"><img src="images/galleries/waterfall.jpg" alt="Image001"></a></li>
+			</ul>
+		</div>
+			
+	</div>
+</div>
+	
+
+<div data-role="page" data-theme="a" id="bio" data-url="bio">
+
+	<div class="sidebar-left">
+		<ul class="fixedElement fixedElement-bio rot-neg-90">
+			<li>The Photographer</li>
+			<li class="icons">
+				<a href="#home" data-transition="flip">
+					<span class="icon-home"></span>
+					<br>
+					<span class="icon-text">Home</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+
+	<div data-role="content">	
+		
+		<ul style="padding-left:15px;">
+			<div id="ps_sidebar_name"><img class="logo" src="images/AJSmith.png" height="50" alt="AJ Smith Photography"></div>
+			<div id="ps_sidebar_content">
+				<img src="images/ajsmith.jpg" height="160" alt="AJ Smith Photography" style="float:left; margin-right: 20px;"> AJ Smith is a Photographer who travels the world shooting what he see's and what he loves! Lifestyles, cultures, experiences, good times, nature, panorama often finding himself in the thick of extreme experiences and situations many people only dream of!<p>He was born in England, though now lives in Melbourne, currently touring the West Coast of Australia in a 4x4. His most recent Photo shoots include trips to India, Indonesia and the Arctic Circle.</p>
+			</div>
+		</ul>
+		
+	</div><!--data-role content-->
+	
+	<div data-role="footer">
+		<h4>&copy; 2012 <a href="http://www.AJSmith.co.uk">AJ Smith Photography</a></h4>
+	</div>
+	
+</div><!-- Bio Page -->
+
+<div data-role="page" data-theme="a" id="vietnam" data-url="vietnam" class="gallery-page">
+
+	<div class="sidebar-left">
+		<ul class="fixedElement fixedElement-vietnam rot-neg-90">
+			<li><a href="#vietnaminfo" data-transition="flip">Vietnam</a></li>
+			<li class="icons">
+				<a href="#vietnaminfo" data-transition="flip">
+					<span class="icon-info"></span>
+					<br>
+					<span class="icon-text">Info</span>
+				</a>
+			</li>
+			<!-- Back button taken out as its not a website - useless -->
+			<!-- <li class="icons">
+				<a href="#" data-rel="back" data-transition="slide">
+					<span class="icon-back"></span>
+					<br>
+					<span class="icon-text">Back</span>
+				</a>
+			</li> -->
+			<li class="icons">
+				<a href="#home" data-transition="slide">
+					<span class="icon-home"></span>
+					<br>
+					<span class="icon-text">Home</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+
+	<div data-role="content">	
+	
+			<ul class="gallery">
+			
+				<li><a href="images/galleries/vietnam/full/P1010494.jpg" rel="external"><img src="images/galleries/vietnam/thumbs/P1010494.jpg" alt="Dragon Fruit Ripe for picking" /></a></li>
+				<li><a href="images/galleries/vietnam/full/P1020082.jpg" rel="external"><img src="images/galleries/vietnam/thumbs/P1020082.jpg" alt="Drying fish for sauce" /></a></li>
+				<li><a href="images/galleries/vietnam/full/P1020135.jpg" rel="external"><img src="images/galleries/vietnam/thumbs/P1020135.jpg" alt="Idillic Beaches" /></a></li>
+				<li><a href="images/galleries/vietnam/full/P1020162.jpg" rel="external"><img src="images/galleries/vietnam/thumbs/P1020162.jpg" alt="Boulders on the beach" /></a></li>
+				<li><a href="images/galleries/vietnam/full/P1020168.jpg" rel="external"><img src="images/galleries/vietnam/thumbs/P1020168.jpg" alt="Fishing Village" /></a></li>
+				<li><a href="images/galleries/vietnam/full/P1020257.jpg" rel="external"><img src="images/galleries/vietnam/thumbs/P1020257.jpg" alt="Mega Moth the size of two hands" /></a></li>
+				<li><a href="images/galleries/vietnam/full/P1020546.jpg" rel="external"><img src="images/galleries/vietnam/thumbs/P1020546.jpg" alt="Young Girl starts work at a young age" /></a></li>
+				<li><a href="images/galleries/vietnam/full/P1020571e.jpg" rel="external"><img src="images/galleries/vietnam/thumbs/P1020571e.jpg" alt="Slow day in fabric" /></a></li>
+				<li><a href="images/galleries/vietnam/full/P1020598.jpg" rel="external"><img src="images/galleries/vietnam/thumbs/P1020598.jpg" alt="Girl at Bach Ha Market" /></a></li>
+				<li><a href="images/galleries/vietnam/full/P1020739.jpg" rel="external"><img src="images/galleries/vietnam/thumbs/P1020739.jpg" alt="Girls in Sapa" /></a></li>
+				<li><a href="images/galleries/vietnam/full/P1020798.jpg" rel="external"><img src="images/galleries/vietnam/thumbs/P1020798.jpg" alt="Paddy Fields" /></a></li>
+				<li><a href="images/galleries/vietnam/full/P1020843.jpg" rel="external"><img src="images/galleries/vietnam/thumbs/P1020843.jpg" alt="Early mornings at Hanoi Lake" /></a></li>
+				<li><a href="images/galleries/vietnam/full/P1020896.jpg" rel="external"><img src="images/galleries/vietnam/thumbs/P1020896.jpg" alt="Children play, Halong Bay" /></a></li>
+				<li><a href="images/galleries/vietnam/full/P1020902.jpg" rel="external"><img src="images/galleries/vietnam/thumbs/P1020902.jpg" alt="Born on the water, Halong Bay" /></a></li>
+				<li><a href="images/galleries/vietnam/full/P1030028.jpg" rel="external"><img src="images/galleries/vietnam/thumbs/P1030028.jpg" alt="Life on the water, Halong Bay" /></a></li>
+				<li><a href="images/galleries/vietnam/full/P1030053.jpg" rel="external"><img src="images/galleries/vietnam/thumbs/P1030053.jpg" alt="Life on the water, Halong Bay" /></a></li>
+				<li><a href="images/galleries/vietnam/full/P1030078.jpg" rel="external"><img src="images/galleries/vietnam/thumbs/P1030078.jpg" alt="Deliveries, Hanoi" /></a></li>
+				
+			</ul>
+		
+	</div><!--data-role content-->
+	
+	<div data-role="footer">
+		<h4>&copy; 2012 <a href="http://www.AJSmith.co.uk">AJ Smith Photography</a></h4>
+	</div>
+	
+</div><!-- END VIETNAM -->
+
+
+<div data-role="page" data-theme="a" id="vietnaminfo" data-url="vietnaminfo">
+
+	<div class="sidebar-left">
+		<ul class="fixedElement fixedElement-vietnaminfo rot-neg-90">
+			<li><a href="#home" data-transition="flip">Vietnam 2006</a></li>
+			<li class="icons">
+				<a href="#vietnam" data-transition="flip">
+					<span class="icon-back"></span>
+					<br>
+					<span class="icon-text">Back</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+
+	<div data-role="content">	
+		
+		<ul>
+		<a href="#vietnam" data-transition="flip">Back to Vietnam</a>
+			<div id="ps_sidebar_name"><a href="#vietnam" data-transition="flip"><img class="logo" src="images/AJSmith.png" width="50%" alt="AJ Smith Photography"></a></div>
+			<div id="ps_sidebar_content">In 2006, I toured Vietnam for 2 months - started in the markets of Saigon and finished with 4cent beers in the bustling back streets of Hanoi.<br><br>
+It's a beautiful country. On my journey up the coast I stopped near Quy Nhon where I didn't meet a single westerner for well over a week whilst enjoying some of the best beaches I've ever come across, huge boulders that roll into the crystal clear blue waters of the South China Sea and Palm Tree lined golden sandy beaches.<br><br>
+The word stunning does not suffice.</div>
+		
+		</ul>
+		
+	</div><!--data-role content-->
+	
+	
+</div><!--vietnaminfo page-->
+
+<div data-role="page" data-theme="a" id="brazil" data-url="brazil" class="gallery-page">
+
+	<div class="sidebar-left">
+		<ul class="fixedElement fixedElement-brazil rot-neg-90">
+			<li><a href="#brazilinfo" data-transition="flip">Brazil</a></li>
+
+			<li class="icons">
+				<a href="#vietnaminfo" data-transition="flip">
+					<span class="icon-info"></span>
+					<br>
+					<span class="icon-text">Info</span>
+				</a>
+			</li>
+			<!-- Back button taken out as its not a website - useless -->
+			<!-- <li class="icons">
+				<a href="#" data-rel="back" data-transition="slide">
+					<span class="icon-back"></span>
+					<br>
+					<span class="icon-text">Back</span>
+				</a>
+			</li> -->
+			<li class="icons">
+				<a href="#home" data-transition="slide">
+					<span class="icon-home"></span>
+					<br>
+					<span class="icon-text">Home</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+
+
+	<div data-role="content">	
+	
+			<ul class="gallery">
+			
+				<li><a href="images/galleries/brazil/full/amazon/IMG_2166.jpg" rel="external"><img src="images/galleries/brazil/thumbs/amazon/IMG_2166.jpg" alt="Canoes on the Amazon" /></a></li>
+				<li><a href="images/galleries/brazil/full/amazon/IMG_0274.jpg" rel="external"><img src="images/galleries/brazil/thumbs/amazon/IMG_0274.jpg" alt="Banana Leaf, the Amazon" /></a></li>
+				<li><a href="images/galleries/brazil/full/amazon/IMG_0287.jpg" rel="external"><img src="images/galleries/brazil/thumbs/amazon/IMG_0287.jpg" alt="Croaking Frog next to my Hammock" /></a></li>
+				<li><a href="images/galleries/brazil/full/amazon/IMG_0289.jpg" rel="external"><img src="images/galleries/brazil/thumbs/amazon/IMG_0289.jpg" alt="Sunrise over the Amazon River" /></a></li>
+				<li><a href="images/galleries/brazil/full/amazon/IMG_2492.jpg" rel="external"><img src="images/galleries/brazil/thumbs/amazon/IMG_2492.jpg" alt="Piranha Fishing" /></a></li>
+				<li><a href="images/galleries/brazil/full/amazon/IMG_2556.jpg" rel="external"><img src="images/galleries/brazil/thumbs/amazon/IMG_2556.jpg" alt="Tree moss, the Amazon" /></a></li>
+				<li><a href="images/galleries/brazil/full/amazon/IMG_2666.jpg" rel="external"><img src="images/galleries/brazil/thumbs/amazon/IMG_2666.jpg" alt="Palm Leaves used for roofing" /></a></li>
+				<li><a href="images/galleries/brazil/full/amazon/IMG_0250.jpg" rel="external"><img src="images/galleries/brazil/thumbs/amazon/IMG_0250.jpg" alt="The Amazon River" /></a></li>
+				<li><a href="images/galleries/brazil/full/amazon/IMG_0273.jpg" rel="external"><img src="images/galleries/brazil/thumbs/amazon/IMG_0273.jpg" alt="Hanging nests over the Amazon" /></a></li>
+				
+				<li><a href="images/galleries/brazil/full/IMG_0195.jpg" rel="external"><img src="images/galleries/brazil/thumbs/IMG_0195.jpg" alt="Sugar Loaf Mountain, Rio" /></a></li>
+				<li><a href="images/galleries/brazil/full/IMG_0192.jpg" rel="external"><img src="images/galleries/brazil/thumbs/IMG_0192.jpg" alt="Christ the Redeemer, Rio" /></a></li>
+				<li><a href="images/galleries/brazil/full/IMG_1536.jpg" rel="external"><img src="images/galleries/brazil/thumbs/IMG_1536.jpg" alt="Flamengo Beach, Rio" /></a></li>
+				<li><a href="images/galleries/brazil/full/IMG_1546.jpg" rel="external"><img src="images/galleries/brazil/thumbs/IMG_1546.jpg" alt="Beach Volleyball on Flamengo, Rio" /></a></li>
+				
+				<li><a href="images/galleries/brazil/full/IMG_0158.jpg" rel="external"><img src="images/galleries/brazil/thumbs/IMG_0158.jpg" alt="Santa Teresa Street Art, Rio" /></a></li>
+				<li><a href="images/galleries/brazil/full/IMG_2852.jpg" rel="external"><img src="images/galleries/brazil/thumbs/IMG_2852.jpg" alt="Santa Teresa Tram, Rio" /></a></li>
+				<li><a href="images/galleries/brazil/full/IMG_0161.jpg" rel="external"><img src="images/galleries/brazil/thumbs/IMG_0161.jpg" alt="Santa Teresa Street Art, Rio" /></a></li>
+				<li><a href="images/galleries/brazil/full/IMG_2854.jpg" rel="external"><img src="images/galleries/brazil/thumbs/IMG_2854.jpg" alt="World Cup Street Art, Rio" /></a></li>
+				
+				<li><a href="images/galleries/brazil/full/IMG_0295.jpg" rel="external"><img src="images/galleries/brazil/thumbs/IMG_0295.jpg" alt="Santa Teresa Steps, Rio" /></a></li>
+				<li><a href="images/galleries/brazil/full/IMG_0292.jpg" rel="external"><img src="images/galleries/brazil/thumbs/IMG_0292.jpg" alt="Santa Teresa Steps, Rio" /></a></li>
+				<li><a href="images/galleries/brazil/full/IMG_2836.jpg" rel="external"><img src="images/galleries/brazil/thumbs/IMG_2836.jpg" alt="The view of Rio from Santa Teresa" /></a></li>
+				
+				<li><a href="images/galleries/brazil/full/IMG_0220.jpg" rel="external"><img src="images/galleries/brazil/thumbs/IMG_0220.jpg" alt="Black Vulture, Isla Grande" /></a></li>
+				<li><a href="images/galleries/brazil/full/IMG_0221.jpg" rel="external"><img src="images/galleries/brazil/thumbs/IMG_0221.jpg" alt="Squirrel Monkey, Isla Grande" /></a></li>
+				<li><a href="images/galleries/brazil/full/IMG_1812.jpg" rel="external"><img src="images/galleries/brazil/thumbs/IMG_1812.jpg" alt="Waterfall, Isla Grande" /></a></li>
+				<li><a href="images/galleries/brazil/full/IMG_1845.jpg" rel="external"><img src="images/galleries/brazil/thumbs/IMG_1845.jpg" alt="Bridge to nowhere, Isla Grande" /></a></li>
+				
+				
+				
+			</ul>
+		
+	</div><!--data-role content-->
+	
+	<div data-role="footer">
+		<h4>&copy; 2012 <a href="http://www.AJSmith.co.uk">AJ Smith Photography</a></h4>
+	</div>
+		
+</div><!-- END BRAZIL -->
+
+
+<div data-role="page" data-theme="a" id="australia" data-url="australia" class="gallery-page">
+
+	<div class="sidebar-left">
+		<ul class="fixedElement fixedElement-australia rot-neg-90">
+			<li><a href="#australiainfo" data-transition="flip">Australia</a></li>
+
+			<li class="icons">
+				<a href="#australiainfo" data-transition="flip">
+					<span class="icon-info"></span>
+					<br>
+					<span class="icon-text">Info</span>
+				</a>
+			</li>
+			<!-- Back button taken out as its not a website - useless -->
+			<!-- <li class="icons">
+				<a href="#" data-rel="back" data-transition="slide">
+					<span class="icon-back"></span>
+					<br>
+					<span class="icon-text">Back</span>
+				</a>
+			</li> -->
+			<li class="icons">
+				<a href="#home" data-transition="slide">
+					<span class="icon-home"></span>
+					<br>
+					<span class="icon-text">Home</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+
+
+	<div data-role="content">	
+	
+			<ul class="gallery">
+			
+				<li><a href="images/galleries/australia/full/blobsdesktop.jpg" rel="external"><img src="images/galleries/australia/thumb/blobsdesktop.jpg" alt="Fuzzy City Lights" /></a></li>
+				<li><a href="images/galleries/australia/full/Bridge+Flinders.jpg" rel="external"><img src="images/galleries/australia/thumb/Bridge+Flinders.jpg" alt="Bridge Over Flinders" /></a></li>
+				<li><a href="images/galleries/australia/full/BurntoutCarBushfireNullabor.jpg" rel="external"><img src="images/galleries/australia/thumb/BurntoutCarBushfireNullabor.jpg" alt="Burnt out Car Bushfire, Nullabor" /></a></li>
+				<li><a href="images/galleries/australia/full/CableBeachSunsetPalms.jpg" rel="external"><img src="images/galleries/australia/thumb/CableBeachSunsetPalms.jpg" alt="Cable Beach Sunset Palms" /></a></li>
+				<li><a href="images/galleries/australia/full/FannieBaySunset.jpg" rel="external"><img src="images/galleries/australia/thumb/FannieBaySunset.jpg" alt="Fannie Bay Sunset" /></a></li>
+				<li><a href="images/galleries/australia/full/GhostGumTree.jpg" rel="external"><img src="images/galleries/australia/thumb/GhostGumTree.jpg" alt="Ghost Gum Tree" /></a></li>
+				<li><a href="images/galleries/australia/full/IMG_0102.jpg" rel="external"><img src="images/galleries/australia/thumb/IMG_0102.jpg" alt="Image007" /></a></li>
+				<li><a href="images/galleries/australia/full/IMG_2309.jpg" rel="external"><img src="images/galleries/australia/thumb/IMG_2309.jpg" alt="Image008" /></a></li>
+				<li><a href="images/galleries/australia/full/IMG_3247.jpg" rel="external"><img src="images/galleries/australia/thumb/IMG_3247.jpg" alt="Image009" /></a></li>
+				<li><a href="images/galleries/australia/full/IMG_7911.jpg" rel="external"><img src="images/galleries/australia/thumb/IMG_7911.jpg" alt="Image001" /></a></li>
+				<li><a href="images/galleries/australia/full/IMG_9657.jpg" rel="external"><img src="images/galleries/australia/thumb/IMG_9657.jpg" alt="Image001" /></a></li>
+				<li><a href="images/galleries/australia/full/IMG_9877.jpg" rel="external"><img src="images/galleries/australia/thumb/IMG_9877.jpg" alt="Image002" /></a></li>
+				<li><a href="images/galleries/australia/full/IMG_9889.jpg" rel="external"><img src="images/galleries/australia/thumb/IMG_9889.jpg" alt="Image008" /></a></li>
+				<li><a href="images/galleries/australia/full/ManningGorgeKimberleys.jpg" rel="external"><img src="images/galleries/australia/thumb/ManningGorgeKimberleys.jpg" alt="Manning Gorge Kimberleys" /></a></li>
+				<li><a href="images/galleries/australia/full/MiniMorris.jpg" rel="external"><img src="images/galleries/australia/thumb/MiniMorris.jpg" alt="Mini Morris" /></a></li>
+				
+				<li><a href="images/galleries/australia/full/IMG_9597.jpg" rel="external"><img src="images/galleries/australia/thumb/IMG_9597.jpg" alt="Davenport Lighthouse, Tasmania" /></a></li>
+				<li><a href="images/galleries/australia/full/IMG_2561.jpg" rel="external"><img src="images/galleries/australia/thumb/IMG_2561.jpg" alt="Kookaburra" /></a></li>
+				<li><a href="images/galleries/australia/full/IMG_3304.jpg" rel="external"><img src="images/galleries/australia/thumb/IMG_3304.jpg" alt="Southbank, Melboure" /></a></li>
+				<li><a href="images/galleries/australia/full/FireyRocks3.jpg" rel="external"><img src="images/galleries/australia/thumb/FireyRocks3.jpg" alt="Bay of Fires, Tasmania" /></a></li>
+				<li><a href="images/galleries/australia/full/Bridge+Flinders.jpg" rel="external"><img src="images/galleries/australia/thumb/Bridge+Flinders.jpg" alt="Flinders Street Station, Melbourne" /></a></li>
+				<li><a href="images/galleries/australia/full/IMG_4821.jpg" rel="external"><img src="images/galleries/australia/thumb/IMG_4821.jpg" alt="Moomba Festival, Melbourne" /></a></li>
+				<li><a href="images/galleries/australia/full/IMG_0002a.jpg" rel="external"><img src="images/galleries/australia/thumb/IMG_0002a.jpg" alt="Spinning Southern Sky" /></a></li>
+				
+				<li><a href="images/galleries/australia/full/IMG_8949.jpg" rel="external"><img src="images/galleries/australia/thumb/IMG_8949.jpg" alt="Devil's Marbles" /></a></li>
+				<li><a href="images/galleries/australia/full/IMG_0190.jpg" rel="external"><img src="images/galleries/australia/thumb/IMG_0190.jpg" alt="Tide's Out" /></a></li>
+				<li><a href="images/galleries/australia/full/IMG_0327hc.jpg" rel="external"><img src="images/galleries/australia/thumb/IMG_0327hc.jpg" alt="Waterfall, Gibb River Road" /></a></li>
+				<li><a href="images/galleries/australia/full/IMG_4806.jpg" rel="external"><img src="images/galleries/australia/thumb/IMG_4806.jpg" alt="Docklands Bridge, Melbourne" /></a></li>
+				<li><a href="images/galleries/australia/full/IMG_4665.jpg" rel="external"><img src="images/galleries/australia/thumb/IMG_4665.jpg" alt="Stromolites, WA" /></a></li>
+				
+				<li><a href="images/galleries/australia/full/IMG_0101.jpg" rel="external"><img src="images/galleries/australia/thumb/IMG_0101.jpg" alt="Beach Driving, WA" /></a></li>
+				<li><a href="images/galleries/australia/full/IMG_0953.jpg" rel="external"><img src="images/galleries/australia/thumb/IMG_0953.jpg" alt="Beach Flag, WA" /></a></li>
+				<li><a href="images/galleries/australia/full/IMG_0054.jpg" rel="external"><img src="images/galleries/australia/thumb/IMG_0054.jpg" alt="Bower Bird Nest, WA" /></a></li>
+				<li><a href="images/galleries/australia/full/12Apostles2.jpg" rel="external"><img src="images/galleries/australia/thumb/12Apostles2.jpg" alt="12 Apostles, Victoria" /></a></li>
+				<li><a href="images/galleries/australia/full/IMG_3186.jpg" rel="external"><img src="images/galleries/australia/thumb/IMG_3186.jpg" alt="Eureka Tower, Melbourne" /></a></li>
+				<li><a href="images/galleries/australia/full/CrownCasino.jpg" rel="external"><img src="images/galleries/australia/thumb/CrownCasino.jpg" alt="Southbank, Melbourne" /></a></li>
+				<li><a href="images/galleries/australia/full/IMG_4180.jpg" rel="external"><img src="images/galleries/australia/thumb/IMG_4180.jpg" alt="Luna Park, Melbourne" /></a></li>
+				
+				<li><a href="images/galleries/australia/full/2PalmsPortrait.jpg" rel="external"><img src="images/galleries/australia/thumb/2PalmsPortrait.jpg" alt="Sunset over St Kilda Beach" /></a></li>
+				<li><a href="images/galleries/australia/full/PalmTreesSunset.jpg" rel="external"><img src="images/galleries/australia/thumb/PalmTreesSunset.jpg" alt="Palm Sunset" /></a></li>
+				<li><a href="images/galleries/australia/full/IMG_3333.jpg" rel="external"><img src="images/galleries/australia/thumb/IMG_3333.jpg" alt="Lizard in the Desert, NT" /></a></li>
+				<li><a href="images/galleries/australia/full/IMG_8140.jpg" rel="external"><img src="images/galleries/australia/thumb/IMG_8140.jpg" alt="Byron Bay Lighthouse" /></a></li>
+				<li><a href="images/galleries/australia/full/thepinnacles.jpg" rel="external"><img src="images/galleries/australia/thumb/thepinnacles.jpg" alt="The Pinnacles, WA" /></a></li>
+				
+				
+			</ul>
+		
+	</div><!--data-role content-->
+	
+	<div data-role="footer">
+		<h4>&copy; 2012 <a href="http://www.AJSmith.co.uk">AJ Smith Photography</a></h4>
+	</div>
+		
+</div><!-- END Australia -->
+
+
+</body>
+</html>
+

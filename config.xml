@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns	= "http://www.w3.org/ns/widgets"
+	xmlns:gap	= "http://phonegap.com/ns/1.0"
+	id		    = "io.cordova.hello-cordova"
+	version 	= "1.0">
+
+	<name>AJ Smith</name>
+
+	<description>
+        AJ Smith Photography
+	</description>
+
+	<author href="http://www.AJSmith.co.uk" email="AJ@AJSmith.co.uk">
+		AJ Smith
+	</author>
+	
+	<preference name="phonegap-version" value="1.5.0" />
+
+  <icon src="icon72.png" width="72" height="72" />
+  <icon src="icon.png" width="48" height="48" />
+  <icon src="icons.png" width="36" height="36" />
+
+  <gap:splash src="Default@2x.png" />
+  
+  <preference name="fullscreen" value="true" />
+  <preference name="show-splash-screen-spinner" value="false" />
+  
+</widget>
